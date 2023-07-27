@@ -7,10 +7,12 @@ namespace ManejoPresupuesto.Servicios
     public interface IRepositorioTiposCuentas
     {
         Task Actualizar(TipoCuenta tipoCuenta);
+        Task Borrar(int id);
         Task Crear(TipoCuenta tipoCuenta);
         Task<bool> Existe(string nombre, int usuarioId);
         Task<IEnumerable<TipoCuenta>> Obtener(int usuarioId);
         Task<TipoCuenta> ObtenerPorId(int id, int usuarioId);
+        Task Ordenar(IEnumerable<TipoCuenta> tipoCuentasOrdenados);
     }
     public class RepositoriosTiposCuentas: IRepositorioTiposCuentas
     {
@@ -45,7 +47,7 @@ namespace ManejoPresupuesto.Servicios
             using var connection = new SqlConnection(connectionString);
             return await connection.QueryAsync<TipoCuenta>(@"SELECT Id, Nombre, Orden
                                                             FROM TiposCuentas
-                                                            WHERE UsuarioId = @UsuarioId", new {usuarioId});
+                                                            WHERE UsuarioId = @UsuarioId ORDER BY Orden", new {usuarioId});
         }
 
         public async Task Actualizar(TipoCuenta tipoCuenta)
@@ -62,6 +64,19 @@ namespace ManejoPresupuesto.Servicios
             return await connection.QueryFirstOrDefaultAsync<TipoCuenta>(@"SELECT Id, Nombre, Orden
                                                                         FROM TiposCuentas
                                                                         WHERE Id = @Id AND UsuarioId = @UsuarioId", new {id, usuarioId});
+        }
+
+        public async Task Borrar(int id)
+        {
+            using var connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("DELETE TiposCuentas WHERE Id = @Id", new { id });
+        }
+
+        public async Task Ordenar(IEnumerable<TipoCuenta> tipoCuentasOrdenados)
+        {
+            var query = "UPDATE TiposCuentas SET Orden = @Orden Where Id = @Id;";
+            using var connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync(query, tipoCuentasOrdenados);
         }
 
     }
