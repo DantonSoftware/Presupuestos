@@ -6,8 +6,8 @@
         public DateTime FechaFin { get; set; }
         public IEnumerable<TransaccionesPorFecha> TransaccionesAgrupadas { get; set; }
         public decimal BalanceDepositos => TransaccionesAgrupadas.Sum(x => x.BalanceDepositos);
-        public decimal balanceRetiros => TransaccionesAgrupadas.Sum(x => x.balanceRetiros);
-        public decimal Total => BalanceDepositos - balanceRetiros;
+        public decimal BalanceRetiros => TransaccionesAgrupadas.Sum(x => x.balanceRetiros);
+        public decimal Total => BalanceDepositos - BalanceRetiros;
 
         public class TransaccionesPorFecha
         {
