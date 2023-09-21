@@ -45,7 +45,7 @@ namespace ManejoPresupuesto.Servicios
         {
             using var connection = new SqlConnection(connectionString);
             return await connection.QueryFirstOrDefaultAsync<Cuenta>(
-                @"select c.Id, c.Nombre, c.Balance, c.descripcion, tc.id
+                @"select c.Id, c.Nombre, c.Balance, c.descripcion, TipoCuentaId 
                     from Cuentas c
                     inner join TiposCuentas tc on tc.Id = c.TipoCuentaId
                     where tc.UsuarioId = @UsuarioId and c.Id = @Id", new { id, usuarioId });

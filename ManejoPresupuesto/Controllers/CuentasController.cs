@@ -53,7 +53,7 @@ namespace ManejoPresupuesto.Controllers
             }
 
             DateTime fechaInicio;
-            DateTime fechafin;
+            DateTime fechaFin;
 
             if (mes <= 0 || mes > 12 || año <= 1900)
             {
@@ -65,14 +65,14 @@ namespace ManejoPresupuesto.Controllers
                 fechaInicio = new DateTime(año, mes, 1);
             }
 
-            fechafin = fechaInicio.AddMonths(1).AddDays(-1);
+            fechaFin = fechaInicio.AddMonths(1).AddDays(-1);
 
             var obtenerTransaccionesPorCuenta = new ObtenerTransaccionesPorCuenta()
             {
                 CuentaId = id,
                 UsuarioId = usuarioId,
                 FechaInicio = fechaInicio,
-                FechaFin = fechafin
+                FechaFin = fechaFin
             };
 
             var transacciones = await repositorioTransacciones.ObtenerPorCuentaId(obtenerTransaccionesPorCuenta);
@@ -89,7 +89,7 @@ namespace ManejoPresupuesto.Controllers
 
             modelo.TransaccionesAgrupadas = transaccionesPorFecha;
             modelo.FechaInicio = fechaInicio;
-            modelo.FechaFin = fechafin;
+            modelo.FechaFin = fechaFin;
 
             ViewBag.mesAnterior = fechaInicio.AddMonths(-1).Month;
             ViewBag.añoAnterior = fechaInicio.AddMonths(-1).Year;
