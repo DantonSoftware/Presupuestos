@@ -59,7 +59,6 @@ namespace ManejoPresupuesto.Servicios
                                             TipoCuentaId = @TipoCuentaId
                                             Where Id = @Id;", cuenta);
 
-
         }
 
         public async Task Borrar(int id)
