@@ -92,7 +92,7 @@ namespace ManejoPresupuesto.Controllers
             return View(modelo);
         }
 
-        public async IActionResult Mensual(int año)
+        public async Task<IActionResult> Mensual(int año)
         {
             var usuarioId = servicioUsuarios.ObtenerUsuarioId();
 
@@ -110,7 +110,7 @@ namespace ManejoPresupuesto.Controllers
                   Gasto = x.Where(x => x.TipoOperacionId == TipoOperacion.Gasto).Select(x => x.Monto).FirstOrDefault()
             }).ToList();
 
-            for (int mes = 0; mes < 12; mes++)
+            for (int mes = 1; mes <= 12; mes++)
             {
                 var transaccion = transaccionesAgrupadas.FirstOrDefault(x => x.Mes == mes);
                 var fechaReferencia = new DateTime(año, mes, 1);
@@ -133,7 +133,7 @@ namespace ManejoPresupuesto.Controllers
 
             var modelo = new ReporteMensualViewModel();
             modelo.Año = año;
-            modelo.TransaccionesPorMes = transaccionesPorMes;
+            modelo.TransaccionesPorMes = transaccionesAgrupadas;
 
             return View(modelo);
         }
